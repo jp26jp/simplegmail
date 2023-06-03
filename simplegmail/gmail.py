@@ -29,10 +29,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from httplib2 import Http
 
-from helpers.gmail import label
-from helpers.gmail.attachment import Attachment
-from helpers.gmail.label import Label
-from helpers.gmail.message import Message
+from simplegmail import label
+from simplegmail.attachment import Attachment
+from simplegmail.label import Label
+from simplegmail.message import Message
 from theperrygroup import settings
 
 
