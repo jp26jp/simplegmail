@@ -10,9 +10,9 @@ from typing import List, Optional, Union
 from httplib2 import Http
 from googleapiclient.errors import HttpError
 
-from simplegmail import label
-from simplegmail.attachment import Attachment
-from simplegmail.label import Label
+from helpers.gmail import label
+from helpers.gmail.attachment import Attachment
+from helpers.gmail.label import Label
 
 
 class Message(object):
@@ -25,7 +25,7 @@ class Message(object):
     Args:
         service: the Gmail service object.
         user_id: the username of the account the message belongs to.
-        msg_id: the message id.
+        message_id: the message id.
         thread_id: the thread id.
         recipient: who the message was addressed to.
         sender: who the message was sent from.
@@ -36,9 +36,6 @@ class Message(object):
         html: the HTML contents of the message. Default None.
         label_ids: the ids of labels associated with this message. Default [].
         attachments: a list of attachments for the message. Default [].
-        headers: a dict of header values. Default {}
-        cc: who the message was cc'd on the message.
-        bcc: who the message was bcc'd on the message.
 
     Attributes:
         _service (googleapiclient.discovery.Resource): the Gmail service object.
@@ -53,9 +50,6 @@ class Message(object):
         html (str): the HTML contents of the message.
         label_ids (List[str]): the ids of labels associated with this message.
         attachments (List[Attachment]): a list of attachments for the message.
-        headers (dict): a dict of header values.
-        cc (List[str]): who the message was cc'd on the message.
-        bcc (List[str]): who the message was bcc'd on the message.
 
     """
 
@@ -64,7 +58,7 @@ class Message(object):
         service: 'googleapiclient.discovery.Resource',
         creds: 'oauth2client.client.OAuth2Credentials',
         user_id: str,
-        msg_id: str,
+        message_id: str,
         thread_id: str,
         recipient: str,
         sender: str,
@@ -75,14 +69,12 @@ class Message(object):
         html: Optional[str] = None,
         label_ids: Optional[List[str]] = None,
         attachments: Optional[List[Attachment]] = None,
-        headers: Optional[dict] = None,
-        cc: Optional[List[str]] = None,
-        bcc: Optional[List[str]] = None
+        headers: Optional[dict] = None
     ) -> None:
         self._service = service
         self.creds = creds
         self.user_id = user_id
-        self.id = msg_id
+        self.id = message_id
         self.thread_id = thread_id
         self.recipient = recipient
         self.sender = sender
@@ -91,11 +83,9 @@ class Message(object):
         self.snippet = snippet
         self.plain = plain
         self.html = html
-        self.label_ids = label_ids or []
-        self.attachments = attachments or []
-        self.headers = headers or {}
-        self.cc = cc or []
-        self.bcc = bcc or []
+        self.label_ids = label_ids if label_ids is not None else []
+        self.attachments = attachments if attachments is not None else []
+        self.headers = headers if headers else {}
 
     @property
     def service(self) -> 'googleapiclient.discovery.Resource':

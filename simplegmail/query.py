@@ -5,7 +5,7 @@ This module contains functions for constructing Gmail search queries.
 
 """
 
-from typing import List, Union
+from typing import List, Tuple, Union
 
 
 def construct_query(*query_dicts, **query_terms) -> str:
@@ -117,36 +117,6 @@ def construct_query(*query_dicts, **query_terms) -> str:
 
         slides (bool): The message contains a Google Slides attachment.
             E.g.: slides=True
-
-        list (str): The message is from a mailing list.
-            E.g.: list=info@example.com
-
-        in (str): The message is in a folder.
-            E.g.: in=anywhere
-                  in=chats
-                  in=trash
-
-        delivered_to (str): The message was delivered to a given address.
-            E.g.: deliveredto=username@gmail.com
-
-        category (str): The message is in a given category.
-            E.g.: category=primary
-
-        larger (str): The message is larger than a certain size in bytes.
-            E.g.: larger=10M
-
-        smaller (str): The message is smaller than a certain size in bytes
-            E.g.: smaller=10M
-
-        id (str): The message has a given message-id header.
-            E.g.: id=339376385@example.com
-
-        has (str): The message has a given attribute.
-            E.g.: has=userlabels
-                  has=nouserlabels
-
-            Note: Labels are only added to a message, and not an entire
-            conversation.
 
     Returns:
         The query string.
@@ -286,7 +256,6 @@ def _subject(subject: str) -> str:
     """
 
     return f'subject:{subject}'
-
 
 def _labels(labels: Union[List[str], str]) -> str:
     """
@@ -546,125 +515,3 @@ def _slides() -> str:
     """
 
     return 'has:presentation'
-
-
-def _list(list_name: str) -> str:
-    """
-    Returns a query term matching messages from a mailing list.
-
-    Args:
-        list_name: The name of the mailing list.
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'list:{list_name}'
-
-
-def _in(folder_name: str) -> str:
-    """
-    Returns a query term matching messages from a folder.
-
-    Args:
-        folder_name: The name of the folder.
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'in:{folder_name}'
-
-
-def _delivered_to(address: str) -> str:
-    """
-    Returns a query term matching messages delivered to an address.
-
-    Args:
-        address: The email address the messages are delivered to.
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'deliveredto:{address}'
-
-
-def _category(category: str) -> str:
-    """
-    Returns a query term matching messages belonging to a category.
-
-    Args:
-        category: The category the messages belong to.
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'category:{category}'
-
-
-def _larger(size: str) -> str:
-    """
-    Returns a query term matching messages larger than a certain size.
-
-    Args:
-        size: The minimum size of the messages in bytes. Suffixes are allowed,
-            e.g., "10M".
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'larger:{size}'
-
-
-def _smaller(size: str) -> str:
-    """
-    Returns a query term matching messages smaller than a certain size.
-
-    Args:
-        size: The maximum size of the messages in bytes. Suffixes are allowed,
-            e.g., "10M".
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'smaller:{size}'
-
-
-def _id(message_id: str) -> str:
-    """
-    Returns a query term matching messages with the message ID.
-
-    Args:
-        message_id: The RFC822 message ID.
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'rfc822msgid:{message_id}'
-
-
-def _has(attribute: str) -> str:
-    """
-    Returns a query term matching messages with an attribute.
-
-    Args:
-        attribute: The attribute of the messages. E.g., "nouserlabels".
-
-    Returns:
-        The query string.
-
-    """
-
-    return f'has:{attribute}'
